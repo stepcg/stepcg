@@ -1,0 +1,33 @@
+// Javascript asset manifest
+//
+// include all the necessary javascript from the default FOM operator portal
+//= require ../portal
+//
+// include any other javascript files that exist in this portal's directory
+//= require_tree .
+//
+// Any custom javascript can be added to this file, which will be included after
+// the default code
+
+/* IoT entity control handlers */
+
+
+const IOT_CONTROLS = {
+  iotEntityToggleControl: '.iot-entity-toggle-control',
+}
+
+function handleIoTEntityToggleControlChanged(event) {
+  const control = $(event.currentTarget)
+  const hubId = control.data('iot-hub-id')
+  const haEntityId = control.data('ha-entity-id')
+  // Here is where we actually do the thing with
+   
+}
+
+function setUpIoTEventHandlers() {
+  $("body").on("change", IOT_CONTROLS.iotEntityToggleControl, handleIoTEntityToggleControlChanged)
+}
+
+$(() => {
+  setUpIoTEventHandlers()
+})

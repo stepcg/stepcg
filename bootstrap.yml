@@ -1,0 +1,8 @@
+OperatorPortal:
+  name: StepCG Operator Portal
+  controller_name: stepcg
+  portal_source: git
+  inherits_from: fom
+  sync_frequency: none
+  remote_sync_url: https://stepcg:hwBs68ixNsiRH-PCM2nx@git.rgnets.com/operator-portals/stepcg.git
+  restart_after_sync: true

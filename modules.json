@@ -1,0 +1,108 @@
+{
+  "accounts": [
+    "account_list",
+    "account_new",
+    "account_edit",
+    "account_destroy",
+    "bypass",
+    "token_edit"
+  ],
+  "coupons": [
+    "plan_coupons",
+    "coupon_batch_create",
+    "destroy_coupon",
+    "download_coupons"
+  ],
+  "emergency": [
+    "hurricane_mode"
+  ],
+  "fleet": [
+    "fleet",
+    "fleet_reports",
+    "fleet_node_create",
+    "fleet_node_destroy",
+    "fleet_node_update",
+    "initiate_http_proxy",
+    "initiate_ssh_proxy"
+  ],
+  "infrastructure": [
+    "infrastructure"
+  ],
+  "iot": [
+    "iot"
+  ],
+  "mac_group":[
+    "mac_group"
+  ],
+  "messaging": [
+    "send_to_account",
+    "send_to_account_group"
+  ],
+  "pms": [
+    "pms",
+    "pms_accounts_destroy"
+  ],
+  "sessions": [
+    "session_list",
+    "session_edit",
+    "session_details",
+    "session_destroy"
+  ],
+  "shared_credential_groups": [
+    "scg_list",
+    "scg_new",
+    "scg_edit",
+    "scg_update",
+    "scg_destroy"
+  ],
+  "survey_results": [
+    "survey_results"
+  ],
+  "triggers": [
+    "triggers",
+    "tgm_destroy"
+  ],
+  "usage_plans": [
+    "rate_plan_list",
+    "rate_plan_edit",
+    "rate_plan_update"
+  ],
+  "admin": [
+    "account_list",
+    "bypass",
+    "account_new",
+    "account_edit",
+    "tokens",
+    "token_edit",
+    "destroy_token",
+    "token_batch_create",
+    "download_tokens",
+    "scg_list",
+    "scg_new",
+    "scg_edit",
+    "scg_update",
+    "rate_plan_list",
+    "rate_plan_edit",
+    "rate_plan_update"
+  ],
+  "destroy": [
+    "account_destroy",
+    "scg_destroy",
+    "fleet_node_destroy"
+  ],
+  "update": [
+    "account_update",
+    "scg_update",
+    "fleet_node_update"
+  ],
+  "operator": [
+    "password_edit",
+    "admin_session_destroy"
+  ],
+  "ssh_keypairs": [
+    "ssh_keypair_create",
+    "ssh_keypair_update",
+    "ssh_keypair_destroy",
+    "download_private_key"
+  ]
+}

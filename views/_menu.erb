@@ -1,0 +1,144 @@
+<% if @hurricane_status %>
+  <li>
+    <h3 class="text-danger">HURRICANE MODE</h3>
+  </li>
+<% end %>
+
+<% if @current_admin %>
+
+  <%# Fleet Proxy indicator and link to terminate %>
+  <% if cookies[:proxy_token] %>
+    <li class="rg-first nav-item">
+      <%= DOMAIN_NAME %>
+    </li>
+    <li class="rg-first nav-item">
+      <%= link_to content_tag(:span, 'End Proxy', :class => 'nav-link'),
+          { :controller => '/admin/menu', :action => :end_proxy },
+          data: { toggle: 'tooltip', container: 'body', placement: 'bottom' },
+          title: 'Terminate the Fleet Proxy'
+      %>
+    </li>
+  <% end %>
+
+  <li class="rg-first nav-item <%= nav_item_active_class(:index) %>"><%= link_to 'Dashboard', { :action => index_action }, { :class => 'nav-link' } %></li>
+
+  <li class="rg-first nav-item <%= nav_item_active_class(:iot) %>"><%= link_to 'IoT', { :action => :iot_dashboard }, { :class => 'nav-link' } %></li>
+
+  <li class="rg-first nav-item <%= nav_item_active_class(:hurricane_mode) %>"><%= link_to 'Hurricane Mode', { :action => :hurricane_mode }, { :class => 'nav-link' } %></li>
+
+  <% if FleetNode.this_node_is_manager? %>
+    <li class="nav-item <%= nav_item_active_class(:fleet) %>"><%= link_to 'Fleet Nodes', { :action => :fleet }, { :class => 'nav-link' } %></li>
+    <li class="nav-item <%= nav_item_active_class(:fleet_reports) %>"><%= link_to 'Fleet Reports', { :action => :fleet_reports }, { :class => 'nav-link' } %></li>
+  <% end %>
+
+  <% if MacGroup.any? %>
+    <li class="nav-item <%= nav_item_active_class(:mac_group) %>"><%= link_to 'Mac Group Batch', { action: :mac_group }, { class: 'nav-link' } %></li>
+  <% end %>
+
+  <% if CustomEmail.any? %>
+    <li class="nav-item <%= nav_item_active_class(:messaging) %>"><%= link_to 'Messaging', { action: :messaging }, { class: 'nav-link' } %></li>
+  <% end %>
+
+  <li class="rg-first nav-item <%= nav_item_active_class(:session_list) %>"><%= link_to 'Active Sessions', { :action => :session_list }, { :class => 'nav-link' } %></li>
+
+  <% if @bypass_plan %>
+    <li class="rg-first nav-item <%= nav_item_active_class(:bypass) %>"><%= link_to 'Bypass', { :action => :bypass }, { :class => 'nav-link' } %></li>
+  <% end %>
+
+  <% if filtered_list(AccessPoint).exists? %>
+    <li class="nav-item <%= nav_item_active_class(:infrastructure) %>"><%= link_to 'Wireless Health', { :action => :infrastructure }, { :class => 'nav-link' } %></li>
+  <% end %>
+
+  <% if filtered_list(Rotator).exists? || Rotator.find_by(urn: 'default') %>
+    <li class="nav-item <%= nav_item_active_class(:rotatee_list) %>"><%= link_to 'Ad Management', { :action => :rotatee_list }, { :class => 'nav-link' } %></li>
+  <% end %>
+
+
+<%# TODO:   move the list of matches into the helper method? %>
+
+  <li class="nav-item dropdown <%= nav_item_active_class(:admin) %>">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Admin
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+          <%= link_to 'Accounts', { :action => :account_list }, { :class => "dropdown-item #{ nav_item_active_class(:account_list)}" } %>
+
+          <% if SharedCredentialGroup.exists? %>
+            <%= link_to 'Shared Credentials', { :action => :scg_list }, { :class => "dropdown-item #{ nav_item_active_class(:scg_list) }" } %>
+          <% end %>
+
+          <%= link_to 'Tokens', { :action => :tokens }, { :class => "dropdown-item #{ nav_item_active_class(:tokens) }" } %>
+
+          <%= link_to 'Rate Plans', { :action => :rate_plan_list }, { :class => "dropdown-item #{ nav_item_active_class(:rate_plan_list) }" } %>
+
+          <%= link_to 'Coupons', { :action => :coupons }, { :class => "dropdown-item #{ nav_item_active_class(:coupon) }" } %>
+
+          <%= link_to 'Signup Codes', { :action => :plan_coupons }, { :class => "dropdown-item #{ nav_item_active_class(:plan_coupon) }" } %>
+
+
+          <% if PmsServer.exists? %>
+            <%= link_to 'PMS Guests', { :action => :pms }, { :class => "dropdown-item #{ nav_item_active_class(:pms, :pms_accounts_destroy) }" } %>
+          <% end %>
+
+          <% if QuotaTrigger.exists? || TimeTrigger.exists? || SnortTrigger.exists? || MaxConnectionsTrigger.exists? || LogHitsTrigger.exists? %>
+            <%= link_to 'Triggers', { :action => :triggers }, { :class => "dropdown-item #{ nav_item_active_class(:triggers, :tgm_destroy) }" } %>
+          <% end %>
+
+          <% if SurveyResult.exists? %>
+            <%= link_to 'Survey Responses', { :action => :survey_results }, { :class => "dropdown-item #{ nav_item_active_class(:survey_results) }" } %>
+          <% end %>
+        </div>
+      </li>
+
+  <% if @prefixes.count > 1 %>
+    <li style="line-height: 40px" class="nav-item">
+      Choose a property:
+      <%= select_tag 'prefix', options_for_select(@prefixes, @prefix) %>
+    </li>
+    <script>
+      $('#prefix').change(function() {
+         var val = $.trim($(this).val());
+         window.location = '<%= url_for({action: :update_prefix}) %>?prefix[value]='+val;
+     });
+    </script>
+  <% end %>
+
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="globalSearchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <span class="far fa-search" style="font-size: 1.3em"></span>
+    </a>
+    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="globalSearchDropdown">
+      <div class="dropdown-item">
+        <%= form_tag({action: :global_search}, :class => 'global_search') do %>
+          <%= text_field_tag(:global_search, params[:global_search],
+                {
+                  :class => 'form-control inline-block w-auto',
+                  #:style => 'width: unset; vertical-align: middle',
+                  :placeholder => 'IP or MAC Address'
+                }) %>
+          <%= button_tag({:class => 'header-button rg-button rg-button-inline no-min-width'}) do %>
+            <span class="far fa-search"></span>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </li>
+
+
+  <% if @current_admin %>
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="#" id="operatorActionsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span class="far fa-user" style="font-size: 1.3em"></span>
+      </a>
+      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="operatorActionsDropdown">
+        <%= link_to 'Change Password', { :action => :password_edit }, { :class => "dropdown-item #{ nav_item_active_class(:password_edit) }" } %>
+        <%= link_to 'SSH Keys', { :action => :ssh_keypairs }, { :class => "dropdown-item #{ nav_item_active_class(:ssh_keypairs) }" } %>
+        <%= link_to ['Logout', @current_admin.login].join(' '),
+              { :action => :admin_session_destroy, :method => :delete },
+              { :class => 'dropdown-item' } %>
+      </div>
+    </li>
+  <% end %>
+
+<% end %>

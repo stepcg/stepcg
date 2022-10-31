@@ -1,0 +1,49 @@
+  <%= form_tag({ action: :mac_group_batch_operation}, class: "fleet-border fleet-background col-12 text-white") do %>
+    <div class="mx-auto">
+      <% if MacGroup.any? %>
+        <fieldset>
+          <legend class="h2">MAC Groups</legend>
+          <div class="row mb-3">
+            <div class="col-12 col-lg-4">
+              <%= label_tag :mac_group, "MAC Group" %>
+              <%= select_tag :mac_group, options_from_collection_for_select(MacGroup.all, :id, :name), prompt: '-- Select a MAC group --' , class: 'form-control' %>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-12 col-lg-6">
+              <%= label_tag :macs, "MAC Addresses" %>
+              <%= text_area_tag :macs, '', class: "form-control", rows: "20", cols: "60" %>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-12 col-lg-3">
+              <%= button_tag 'Add', type: 'submit', name: :add_macs, data: { confirm: 'Are you sure you want to batch add these MAC records to the MAC group?', disable_with: 'Please wait...' }, class: 'js-mac-group-submit col-12 col-lg-6 my-1 d-block mr-auto btn btn-lg btn-primary', disabled: false %>
+            </div>
+            <div class="col-12 col-lg-3">
+              <%= button_tag 'Delete', type: 'submit', name: :delete_macs, data: { confirm: 'Are you sure you want to batch delete these MAC records from the MAC group?', disable_with: 'Please wait...' }, class: 'js-mac-group-submit col-12 col-lg-6 my-1 d-block ml-auto btn btn-lg btn-danger', disabled: true  %>
+            </div>
+          </div>
+        </fieldset>
+      <% else %>
+        <div class="row text-white">
+          <div class="col-12">
+            <h2>No MAC Groups</h2>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<script>
+  function handleMacGroupInputChanged() {
+    const input = $('#macs')
+    const select = $('#mac_group')
+    const buttons = $('.js-mac-group-submit')
+    buttons.prop('disabled', !(input.val() && select.val()))
+  }
+
+  $(() => {
+    $('#mac_group').change(handleMacGroupInputChanged)
+    $('#macs').keyup(handleMacGroupInputChanged)
+    handleMacGroupInputChanged()
+  })
+</script>

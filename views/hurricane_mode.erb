@@ -1,0 +1,18 @@
+<div class="rg-form"  style="text-align: center">
+  <h2 class="mb-5"> Hurricane Mode </h2>
+  <%
+    status_text = (@hurricane_status ? 'on' : 'off')
+    status_class = (@hurricane_status  ? 'text-success' : 'text-danger')
+  %>
+  <h3>Current Status: <span class="<%= status_class %>"><%= status_text.upcase %></span></h3> 
+    <%
+      status_action = (@hurricane_status ? :hurricane_mode_off : :hurricane_mode_on)
+      status_image = "#{@hurricane_status ? 'off' : 'on'}_icon.svg"
+      status_style = (@hurricane_status ? 'red' : 'green')
+    %>
+    <div class="w-100 d-flex justify-content-center">
+      <%= link_to action: status_action, style: 'max-height: 88px', class: 'm-5 p-5' do  %>
+        <%= portal_inline_svg status_image, style: "fill: #{status_style};" %>
+      <% end %>
+    </div>
+</div>
